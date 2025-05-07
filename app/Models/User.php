@@ -9,6 +9,23 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function commentedArticles()
+    {
+        return $this->hasManyThrough(Article::class , Comment::class ,
+            'user_id' , 'id' , 'id' , 'article_id')
+            ->distinct();
+    }
+    public function favorites()
+    {
+        return $this->belongsToMany(Article::class, 'favorites');
+    }
+
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -18,7 +35,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'phone',
         'email',
         'password',
     ];
