@@ -13,7 +13,7 @@ class ArticleController extends Controller
     public function index()
     {
         // Fetch all articles with their related comments and author
-        $articles = Article::with(['comments', 'author'])->get();
+        $articles = Article::with(['comments'])->get();
         return response()->json($articles);
     }
 
@@ -29,7 +29,6 @@ class ArticleController extends Controller
             'author' => 'required|string|max:255',
             'image' => 'nullable|string',
             'link' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
         ]);
 
         // Create a new article
@@ -44,7 +43,7 @@ class ArticleController extends Controller
     public function show(Article $article)
     {
         // Return the article with its related comments and author
-        return response()->json($article->load(['comments', 'author']));
+        return response()->json($article->load(['comments']));
     }
 
     /**

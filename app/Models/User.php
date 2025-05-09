@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-
+    use HasFactory, Notifiable;
     public function comments()
     {
         return $this->hasMany(Comment::class);
@@ -27,7 +27,6 @@ class User extends Authenticatable
 
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
