@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // You can use the User factory to create multiple users
-        \App\Models\User::factory(10)->create(); // Creates 10 users
+        \App\Models\User::factory(0)->create(); // Creates 10 users
     }
         
 }

@@ -13,7 +13,7 @@ class CommentSeeder extends Seeder
     public function run(): void
     {
         // You can use the Comment factory to create multiple comments
-        \App\Models\Comment::factory(10)->create(); // Creates 10 comments
+        \App\Models\Comment::factory(0)->create(); // Creates 10 comments
 
    
     }

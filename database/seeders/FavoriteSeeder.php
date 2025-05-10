@@ -13,7 +13,7 @@ class FavoriteSeeder extends Seeder
     public function run(): void
     {
         // You can use the FavoriteFactory to create fake data for the favorites table
-        \App\Models\Favorite::factory(5)// Adjust the number of records you want to create
+        \App\Models\Favorite::factory(0)// Adjust the number of records you want to create
             ->create();
         
         // Alternatively, you can manually create records if needed

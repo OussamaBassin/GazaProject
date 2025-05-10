@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $user = Auth::user();
         $token = $user->createToken('API Token')->plainTextToken;
-
+        
         return response()->json(['token' => $token, 'user' => $user]);
     }
 

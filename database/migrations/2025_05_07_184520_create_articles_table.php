@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->text('content');
-            $table->text('image')->nullable();
+            $table->text('urlToImage')->nullable();
             $table->string('author')->nullable();
-            $table->string('link')->nullable();
+            $table->string('url')->nullable();
             $table->integer('likes')->default(0);
             $table->integer('dislikes')->default(0);
+            $table->text('description')->nullable();
+            $table->text('publishedAt')->nullable();
+            $table->text('source')->nullable();
             $table->timestamps();
         });
     }

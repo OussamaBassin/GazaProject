@@ -13,7 +13,7 @@ class ArticleSeeder extends Seeder
     public function run(): void
     {
         // You can use the Article factory to create multiple articles
-        \App\Models\Article::factory(10)->create(); // Creates 10 articles
+        \App\Models\Article::factory(0)->create(); // Creates 10 articles
         // You can also create specific articles with specific attributes
     }
 }
