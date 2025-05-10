@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +15,6 @@ class UserSeeder extends Seeder
     {
         // You can use the User factory to create multiple users
         \App\Models\User::factory(10)->create(); // Creates 10 users
-
-
     }
+        
 }

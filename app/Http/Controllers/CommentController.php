@@ -80,7 +80,7 @@ class CommentController extends Controller
     {
         // Fetch comments for the given article ID with the related user
         $comments = Comment::where('article_id', $articleId)->with('user')->get();
-        return response()->json($comments);
+        return response()->json(count($comments) ? $comments : ['message' => 'No comments found for this article']);
     }
 
     /**
@@ -90,6 +90,6 @@ class CommentController extends Controller
     {
         // Fetch comments for the given user ID with the related article
         $comments = Comment::where('user_id', $userId)->with('article')->get();
-        return response()->json($comments);
+        return response()->json(count($comments) ? $comments : ['message' => 'No comments found for this user']);
     }
 }
