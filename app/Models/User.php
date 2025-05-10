@@ -23,7 +23,7 @@ class User extends Authenticatable
     }
     public function favorites()
     {
-        return $this->belongsToMany(Article::class, 'favorites');
+        return $this->belongsToMany(Article::class, 'favorites' , 'user_id', 'article_id');
     }
 
 
@@ -39,6 +39,7 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
+        'favorites',
     ];
 
     /**

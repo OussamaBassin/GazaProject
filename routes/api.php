@@ -21,6 +21,9 @@ Route::get('/articles/{article}', [ArticleController::class, 'show']);
 Route::get('/articles/{article}/comments', [CommentController::class, 'getCommentsByArticle']);
 Route::get('/users/{users}/comments', [CommentController::class, 'getCommentsByUser']);
 
+Route::get('/users/{user}/favorites', [UserController::class, 'getFavoriteArticlesById']);
+Route::get('/articles/{user}/favorites', [ArticleController::class, 'getFavoriteCountForArticle']);
+
 
 
 

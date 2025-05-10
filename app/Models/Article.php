@@ -17,9 +17,9 @@ class Article extends Model
         'image',
         'link',
     ];
-    public function favoritedBy()
+    public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites');
+        return $this->belongsToMany(User::class, 'favorites' , 'article_id', 'user_id');
     }
     
     public function comments()

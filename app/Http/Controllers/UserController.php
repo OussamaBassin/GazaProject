@@ -138,19 +138,6 @@ class UserController extends Controller
         return response()->json(['message' => 'User deleted successfully']);
     }
 
-    /**
-     * Get liked articles for the specified user.
-     */
-    public function getLikedArticles(string $id)
-    {
-        // Fetch liked articles for the given user ID
-        $likedArticles = User::findOrFail($id)->likedArticles()->get();
-        return response()->json($likedArticles);
-    }
-
-    /**
-     * Get comments for the specified user.
-     */
     public function getComments(string $id)
     {
         // Fetch comments for the given user ID
@@ -161,10 +148,11 @@ class UserController extends Controller
     /**
      * Get favorite articles for the specified user.
      */
-    public function getFavoriteArticles(string $id)
+
+    public function getFavoriteArticlesById($id)
     {
         // Fetch favorite articles for the given user ID
-        $favoriteArticles = User::findOrFail($id)->favoritedArticles()->get();
-        return response()->json($favoriteArticles);
+        $favoriteArticles = User::findOrFail($id)->favorites()->get();
+        return response()->json(count($favoriteArticles) ? $favoriteArticles : 'No favorite articles found');
     }
 }

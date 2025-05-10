@@ -22,6 +22,8 @@ class ArticleFactory extends Factory
             'image' => $this->faker->imageUrl(),
             'author'=> $this->faker->name(),
             'link'=> $this->faker->url(),
+            'likes' => $this->faker->numberBetween(0, 100),
+            'dislikes' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

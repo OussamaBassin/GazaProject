@@ -87,4 +87,13 @@ class ArticleController extends Controller
         $comments = $article->comments()->with('user')->get();
         return response()->json($comments);
     }
+
+    public function getFavoriteCountForArticle($articleId)
+    {
+        $article = Article::findOrFail($articleId);
+        $favoriteCount = $article->favorites()->count();  
+    
+        return response()->json(['favorite_count' => $favoriteCount]);
+    }
+    
 }
