@@ -9,6 +9,26 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+<<<<<<< HEAD
+=======
+    use HasApiTokens, HasFactory, Notifiable;
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function commentedArticles()
+    {
+        return $this->hasManyThrough(Article::class , Comment::class ,
+            'user_id' , 'id' , 'id' , 'article_id')
+            ->distinct();
+    }
+    public function favorites()
+    {
+        return $this->belongsToMany(Article::class, 'favorites' , 'user_id', 'article_id');
+    }
+
+
+>>>>>>> a411296 (nearly there)
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -21,6 +41,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'favorites',
     ];
 
     /**
