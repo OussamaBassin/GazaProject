@@ -25,5 +25,8 @@ Route::get('/users/{user}/favorites', [UserController::class, 'getFavoriteArticl
 Route::get('/articles/{user}/favorites', [ArticleController::class, 'getFavoriteCountForArticle']);
 
 
+Route::get('/test', [ArticleController::class, 'handel']);
+
+
 
 

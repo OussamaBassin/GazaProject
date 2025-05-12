@@ -44,7 +44,7 @@ class ApiBootFetcherServiceProvider extends ServiceProvider
                                 'description' => $item['description'] ?? null,
                                 'url' => $item['url'] ?? null,
                                 'urlToImage' => $item['urlToImage'] ?? null,
-                                'source' => $item['source']['name'] ?? null, // Assuming 'source' is an array with a 'name' key
+                                'source' => $item['source'] ?? null, // Assuming 'source' is an array with a 'name' key
                                 'content' => $item['content'] ?? null,
                                 'publishedAt' => $item['publishedAt'] ?? null,
                             ]);

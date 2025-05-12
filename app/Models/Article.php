@@ -14,8 +14,13 @@ class Article extends Model
         'title',
         'content',
         'author',
-        'image',
-        'link',
+        'urlToImage',
+        'url',
+        'description',
+        'publishedAt',
+        'source',
+        'likes',
+        'dislikes'
     ];
     public function favorites()
     {

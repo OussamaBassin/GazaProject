@@ -95,5 +95,5 @@ class ArticleController extends Controller
     
         return response()->json(['favorite_count' => $favoriteCount]);
     }
-    
+ 
 }
