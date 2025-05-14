@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -12,9 +13,9 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        // Fetch all articles with their related comments and author
-        $articles = Article::with(['comments'])->get();
-        return response()->json($articles);
+        return Article::with(['comments'])
+            ->latest('publishedAt')
+            ->paginate(10);
     }
 
     /**
@@ -22,19 +23,15 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the request
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'author' => 'required|string|max:255',
-            'image' => 'nullable|string',
-            'link' => 'nullable|string',
+            'category' => 'required|string',
+            'is_draft' => 'boolean'
         ]);
 
-        // Create a new article
-        $article = Article::create($validated);
-
-        return response()->json($article, 201); // Return the created article with a 201 status
+        $article = Auth::user()->articles()->create($validated);
+        return response()->json($article, 201);
     }
 
     /**
@@ -42,8 +39,8 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        // Return the article with its related comments and author
-        return response()->json($article->load(['comments']));
+        $article->increment('views');
+        return $article->load(['comments.user']);
     }
 
     /**
@@ -51,20 +48,16 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        // Validate the request
+        $this->authorize('update', $article);
         $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'content' => 'sometimes|required|string',
-            'author' => 'sometimes|required|string|max:255',
-            'image' => 'nullable|string',
-            'link' => 'nullable|string',
-            'user_id' => 'sometimes|required|exists:users,id',
+            'title' => 'string|max:255',
+            'content' => 'string',
+            'category' => 'string',
+            'is_draft' => 'boolean'
         ]);
 
-        // Update the article
         $article->update($validated);
-
-        return response()->json($article); // Return the updated article
+        return response()->json($article);
     }
 
     /**
@@ -72,10 +65,9 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        // Delete the article
+        $this->authorize('delete', $article);
         $article->delete();
-
-        return response()->json(['message' => 'Article deleted successfully']);
+        return response()->json(null, 204);
     }
 
     /**
@@ -88,12 +80,57 @@ class ArticleController extends Controller
         return response()->json($comments);
     }
 
-    public function getFavoriteCountForArticle($articleId)
+    public function toggleLike(Article $article)
     {
-        $article = Article::findOrFail($articleId);
-        $favoriteCount = $article->favorites()->count();  
-    
-        return response()->json(['favorite_count' => $favoriteCount]);
+        $user = Auth::user();
+        if ($article->likes()->where('user_id', $user->id)->exists()) {
+            $article->likes()->where('user_id', $user->id)->delete();
+            return response()->json(['liked' => false]);
+        }
+        
+        $article->likes()->create(['user_id' => $user->id]);
+        return response()->json(['liked' => true]);
     }
- 
+
+    public function toggleFavorite(Article $article)
+    {
+        $user = Auth::user();
+        if ($user->favorites()->where('article_id', $article->id)->exists()) {
+            $user->favorites()->detach($article->id);
+            return response()->json(['favorited' => false]);
+        }
+        
+        $user->favorites()->attach($article->id);
+        return response()->json(['favorited' => true]);
+    }
+
+    public function getUserDrafts()
+    {
+        return Auth::user()->articles()
+            ->where('is_draft', true)
+            ->latest()
+            ->get();
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+        return Article::where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('content', 'like', "%{$query}%")
+              ->orWhere('description', 'like', "%{$query}%");
+        })
+        ->with(['comments'])
+        ->latest('publishedAt')
+        ->paginate(10);
+    }
+
+
+
+    public function getFavoriteCountForArticle(Article $article)
+    {
+        return response()->json([
+            'favorites_count' => $article->favorites()->count()
+        ]);
+    }
 }

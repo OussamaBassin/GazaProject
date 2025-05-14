@@ -21,7 +21,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('app:fetch-articles')->daily();
+        $schedule->command('app:fetch-articles')
+                ->hourly()
+                ->withoutOverlapping()
+                ->appendOutputTo(storage_path('logs/article-fetches.log'));
     }
 
     /**
